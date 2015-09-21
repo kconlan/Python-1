@@ -44,22 +44,27 @@ def main():
 
     line_nr = len(lines) - 1
     tries = -1
+    matches = 0
     while tries < line_nr:
         tries += 1
         if lines[tries].find(user_input) != -1:
+            matches += 1
             print('Match found: ' + lines[tries])
-            return 0
-        elif _and and (lines[tries].find(user_argv[0]) != -1 and
-                       lines[tries].find(user_argv[2]) != -1):
+        if _and and (lines[tries].find(user_argv[0]) != -1 and
+                     lines[tries].find(user_argv[2]) != -1):
+            matches += 1
             print('Match found (and): ' + lines[tries])
-            return 0
-        elif _or and (lines[tries].find(user_argv[0]) != -1 or
-                      lines[tries].find(user_argv[2]) != -1):
+        if _or and (lines[tries].find(user_argv[0]) != -1 or
+                    lines[tries].find(user_argv[2]) != -1):
+            matches += 1
             print('Match found (or): ' + lines[tries])
-            return 0
 
-    print('No matches found.')
-    return 1
+    if matches == 0:
+        print('No matches found.')
+    else:
+        print('Found ' + str(matches) + ' matches.')
+
+    return matches < 1
 
 if __name__ == '__main__':
     sys.exit(main())
