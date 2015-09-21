@@ -1,52 +1,65 @@
 #!/usr/bin/python2
 
-# Thanks to: http://www.artima.com/weblogs/viewpost.jsp?thread=4829
-#
 from __future__ import print_function
 import sys
 import getopt
 
 
-class Usage(object):
-
-    def __init__(self, message):
-        self.message = message
-
-
 def main():
     try:
         opts, args = getopt.getopt(sys.argv[1:], 'h', ['help'])
-    except getopt.GetoptError as err:
-        # print help information and exit:
-        raise Usage(err)
-        sys.exit(2)
+    except:
+        print('Usage: search.py [-h] <filename>')
+        return 1
 
     for o, a in opts:
         if o in ('-h', '--help'):
             print('Usage: search.py <filename>')
-            sys.exit()
+            return 1
         else:
             assert False, 'Unrecognized option'
+            return 1
 
     if len(args) < 1:
         print('Usage: search.py <filename>')
-        sys.exit()
+        return 1
 
     with open(args[0], 'r') as f:
-        contents = sorted(f.read().splitlines())
+        lines = sorted(f.read().splitlines())
 
-    user_argv = raw_input('prompt:')
+    user_input = raw_input('prompt:')
+    user_argv = user_input.split(' ')
+    _and = False
+    _or = False
 
-    line_nr = len(contents) - 1
+    if len(user_argv) == 3:
+        if user_argv[1].lower() == 'and':
+            _and = True
+        elif user_argv[1].lower() == 'or':
+            _or = True
+
+    if _and or _or:
+        if user_argv[0] == user_argv[2]:
+            print('Error: search terms must be unique.')
+
+    line_nr = len(lines) - 1
     tries = -1
     while tries < line_nr:
         tries += 1
-        if contents[tries].find(user_argv) != -1:
-            print('Match found on: ' + str(tries) + ':')
-            print(contents[tries])
-            return
+        if lines[tries].find(user_input) != -1:
+            print('Match found: ' + lines[tries])
+            return 0
+        elif _and and (lines[tries].find(user_argv[0]) != -1 and
+                       lines[tries].find(user_argv[2]) != -1):
+            print('Match found (and): ' + lines[tries])
+            return 0
+        elif _or and (lines[tries].find(user_argv[0]) != -1 or
+                      lines[tries].find(user_argv[2]) != -1):
+            print('Match found (or): ' + lines[tries])
+            return 0
 
     print('No matches found.')
+    return 1
 
 if __name__ == '__main__':
     sys.exit(main())
