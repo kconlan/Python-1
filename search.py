@@ -1,6 +1,5 @@
-#!/usr/bin/python2
+#!/usr/bin/python
 
-from __future__ import print_function
 import sys
 import getopt
 
@@ -27,7 +26,7 @@ def main():
     with open(args[0], 'r') as f:
         lines = sorted(f.read().splitlines())
 
-    user_input = raw_input('prompt:')
+    user_input = input('prompt:')
     user_argv = user_input.split(' ')
     _and = False
     _or = False

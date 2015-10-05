@@ -1,6 +1,8 @@
 '''
-5. Given two strings, write a function to decide is one is the permutation of the other.
+5. Given two strings, write a function to decide is one is
+   the permutation of the other.
 '''
+
 
 def isPermutation(s1, s2):
     weightS1 = 0
@@ -10,5 +12,5 @@ def isPermutation(s1, s2):
     for s in s2:
         weightS2 += ord(s)
     return weightS1 == weightS2
- 
+
 print(isPermutation('racecar', 'rraacce'))
