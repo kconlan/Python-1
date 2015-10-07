@@ -20,7 +20,14 @@ now quiz your students on the computer, and they can't cheat! :)
 Setup
 =====
 
-    $ virtualenv3
+    $ virtualenv2 .
     $ source bin/activate
     $ pip install -r requirements.txt
     $ python Verify
+
+Issues
+======
+Flask only works with Python 2 at the moment.
+Our application is [forwards compatible][fw-compat] with Python 3.
+
+[fw-compat]: http://lucumr.pocoo.org/2011/1/22/forwards-compatible-python/
