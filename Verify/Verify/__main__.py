@@ -3,13 +3,16 @@
     Verify
     ~~~~~~
 
-    A micro quiz application written as Flask example with
-    Flask and sqlite3.
+    A micro quiz application written with Flask and SQLite3.
+
+    Based on Flaskr,
+    :copyright: (c) 2010 by Armin Ronacher.
 
     :copyright: (c) 2015 by Charlie Svitlik.
     :license: GPL-3, see LICENSE for more details.
 '''
 
+from __future__ import absolute_import, division, print_function
 from sqlite3 import dbapi2 as sqlite3
 from flask import Flask, request, session, g, redirect, url_for, abort, \
     render_template, flash, _app_ctx_stack
@@ -17,9 +20,9 @@ from flask import Flask, request, session, g, redirect, url_for, abort, \
 # configuration
 DATABASE = 'Verify.db'
 DEBUG = True
-SECRET_KEY = '12e2a50b903eb47373e89d0ba10eb3c0fd9687e6fb8f528b10fc50ab3954460e'
+SECRET_KEY = 'development key'
 USERNAME = 'admin'
-PASSWORD = '47f0d6fe7926aab0d701a1f513eed459a291d295e4997b9b41e4308657d4925b'
+PASSWORD = 'default'
 
 # create our little application :)
 app = Flask(__name__)
@@ -75,7 +78,7 @@ def add_entry():
     db.execute('insert into entries (title, text) values (?, ?)',
                [request.form['title'], request.form['text']])
     db.commit()
-    flash('New entry was successfully posted')
+    flash('New entry was successfully posted!')
     return redirect(url_for('show_entries'))
 
 
@@ -84,12 +87,12 @@ def login():
     error = None
     if request.method == 'POST':
         if request.form['username'] != app.config['USERNAME']:
-            error = 'Invalid username'
+            error = 'Invalid username.'
         elif request.form['password'] != app.config['PASSWORD']:
-            error = 'Invalid password'
+            error = 'Invalid password.'
         else:
             session['logged_in'] = True
-            flash('You were logged in')
+            flash('You were logged in.')
             return redirect(url_for('show_entries'))
     return render_template('login.html', error=error)
 
@@ -97,7 +100,7 @@ def login():
 @app.route('/logout')
 def logout():
     session.pop('logged_in', None)
-    flash('You were logged out')
+    flash('You were logged out.')
     return redirect(url_for('show_entries'))
 
 
